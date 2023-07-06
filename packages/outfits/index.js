@@ -15,6 +15,8 @@ if(UseCachedOutfits)
 {
 	maleOutfits	= require("./maleData.json");
 	femaleOutfits = require("./femaleData.json");
+
+    console.log(`Outfits| Loaded ${maleOutfits.length} maleOutfits and ${femaleOutfits.length} femaleOutfits`);
 }
 else
 {

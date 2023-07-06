@@ -38,6 +38,7 @@ mp.events.add("playerJoin", (player) => {
   if (!whitelist.includes(socialClub)) {
     player.kick(`Ваш аккаунт socialclub не находится в белом списке (${socialClub})`);
     console.log(`Игрок ${player.name} был кикнут с сервера, так как не находится в белом списке: ${socialClub}`);
+    mp.players.broadcast(`!{Yellow}${player.socialClub} !{Gray}попытался зайти на сервер..`);
   }
 })
 
