@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vehicle Manager</title>
+ <!-- UIkit CSS -->
+<link rel="stylesheet" href="./backend/uikit/uikit.min.css" />
+
+
+<!-- UIkit JS -->
+<script src="./backend/uikit/uikit.min.js"></script>
+
+<link rel="stylesheet" href="./backend/css/style.css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+  <body>
+    <div class="uk-card uk-card-secondary uk-card-body uk-width-1-2@m">
+     <img class='car' src="./backend/img/car.png" border="0">
+     <div class="uk-flex">
+     <div><img id='seconddoor' class='seconddoor' src="./backend/img/arrow.png"></div>
+     <div><img id='fourthdoor' class='fourthdoor' src="./backend/img/arrow.png"></div>
+     <div><img id='trunk' class='trunk' src="./backend/img/arrow.png"></div>
+     <div><img id='driver' class='driver' src="./backend/img/arrow.png"></div>
+     <div><img id='thirddoor' class='thirddoor' src="./backend/img/arrow.png"></div>
+     <div><img id='hood'  class='hood' src="./backend/img/arrow.png"></div>
+    </div>
+
+    <br><div class="uk-flex">
+    <div><span style="position:relative;right:18px;bottom: 13px;">
+      <img src="https://png.icons8.com/color/30/000000/engine.png">
+    </span>
+    <label class="switch">
+      <input id='engine' type="checkbox">
+      <span class="slider"></span>
+    </label>
+     </div>
+  <div>
+    <span style="position:relative; bottom: 15px; left:10px;">
+      <img src="https://png.icons8.com/color/30/000000/light-off.png">
+    </span><span style='position:relative; left:20px;'>
+    <label class="switch">
+      <input id='lights' type="checkbox">
+      <span class="slider"></span>
+    </label> </span>
+  </div>
+  <div>
+    <span style="position:relative;left:29px;bottom: 15px;">
+      <img src="https://i.imgur.com/giuLM2A.png">
+    </span>
+    <span style="position:relative; left:40px;">
+      <label class="switch">
+        <input id='seatbelt' type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </span>
+  </div>
+</div>
+
+</body>
+
+  <script type="text/javascript" src="./backend/js/index.js"></script>
+  
+</html>

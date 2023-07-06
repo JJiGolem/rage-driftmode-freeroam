@@ -1,0 +1,124 @@
+.uk-card {
+    position: relative;
+    top: 30px;
+    width: 380px;
+    height: 350px;
+  }
+  
+  .car {
+    margin-left: 60px;
+    height: 200px;
+    position: relative;
+    top: 4px;
+  }
+  
+  .seconddoor {
+    margin: 0;
+    width: 50px;
+    transform: rotate(90deg);
+    padding-right: 15px;
+    position: relative;
+    left: 220px;
+    bottom: 70px;
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {display:none;}
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: green;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px green;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+    
+  .engine {
+    position: relative;
+    left: 5px;
+  }
+  
+  .fourthdoor {
+    margin: 0;
+    width: 50px;
+    transform: rotate(90deg);
+    padding-right: 15px;
+    position: relative;
+    left: 167px;
+    bottom: 115px;
+  }
+  
+  .driver {
+    margin: 0;
+    width: 50px;
+    transform: rotate(270deg);
+    padding-right: 15px;
+    position: relative;
+    left: -100px;
+    bottom: 130px;
+  }
+  
+  .thirddoor {
+    margin: 0;
+    width: 50px;
+    transform: rotate(270deg);
+    padding-right: 15px;
+    position: relative;
+    left: -150px;
+    bottom: 85px;
+  }
+  
+  .hood {
+    margin: 0;
+    width: 50px;
+    padding-right: 15px;
+    position: relative;
+    left: -110px;
+    bottom: 230px;
+  }
+  
+  .trunk {
+    margin: 0;
+    width: 50px;
+    transform: rotate(180deg);
+    padding-right: 10px;
+    position: relative;
+    left: 32px;
+    top: 3px;
+  }

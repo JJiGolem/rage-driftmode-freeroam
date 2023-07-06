@@ -1,0 +1,11 @@
+{
+	"maxplayers" : 100,
+	"name" : "RAGEMP Driftmode",
+	"gamemode" : "roleplay",
+	"language" : "ru",
+	"stream-distance" : 250.0,
+	"announce" : true,
+	"enable-nodejs" : true,
+	"allow-cef-debugging": false,
+	"port": 22005
+}

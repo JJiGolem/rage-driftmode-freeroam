@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>genzocarcompare</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+        <style>
+            * {margin: 0;padding: 0;font-family: 'Open Sans';font-size: .8vw;}
+            body {display: none;}
+            #container {
+                width: 10vw;
+                margin: .5vw auto;
+                margin-top: 8vh;
+                background-color: #3b3b3b;
+                padding: .5vw;
+                border: .1vw solid #000;
+                color: #FFF;
+            }
+            #container table {width: 100%;}
+            #container td:nth-child(2){text-align: right;}
+        </style>
+        <script src="index.js"></script>
+        <script>
+        function hideUI(){
+            document.getElementsByTagName("body")[0].style.display = "none";
+        }
+        function showUI(){
+            document.getElementsByTagName("body")[0].style.display = "block";
+        }
+        function updateUI(time0To100, time0To200, vmax){
+            if(time0To100 == 0) time0To100 = "0.000";
+            if(time0To200 == 0) time0To200 = "0.000";
+            document.getElementById("time0To100").innerHTML = time0To100;
+            document.getElementById("time0To200").innerHTML = time0To200;
+            document.getElementById("vmax").innerHTML = vmax;
+        }
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <table>
+                <tr>
+                    <td>0-100 km/h:</td>
+                    <td><span id="time0To100">0.000</span> sec</td>
+                </tr>
+                <tr>
+                    <td>0-200 km/h:</td>
+                    <td><span id="time0To200">0.000</span> sec</td>
+                </tr>
+                <tr>
+                    <td>Vmax:</td>
+                    <td><span id="vmax">0</span> km/h</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
