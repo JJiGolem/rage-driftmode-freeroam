@@ -128,11 +128,11 @@ function createTuningMenu(vehicle)
 					categoryMenu.AddItem(vehicleItem);
 					continue;
 				}
-				
-				let labelText = vehicle.getModTextLabel(i, modIndex);
-				//mp.gui.chat.push("Mod: " + modIndex + " | Label: " + labelText);
-				let vehicleName = labelText ? mp.game.ui.getLabelText(labelText) : `${categoryTitles[i]} #${modIndex}`;
-				let vehicleItem = new UIMenuItem(vehicleName, "");
+                
+				const modLabel = vehicle.getModTextLabel(i, modIndex);
+                const labelText = typeof(modLabel) == "string" ? mp.game.ui.getLabelText(modLabel) : "NULL";
+				const vehicleName = labelText != "NULL" ? labelText : `${categoryTitles[i]} #${modIndex}`;
+				const vehicleItem = new UIMenuItem(vehicleName, "");
 				vehicleItem.modType = i;
 				vehicleItem.modIndex = modIndex;
 				categoryMenu.AddItem(vehicleItem);
