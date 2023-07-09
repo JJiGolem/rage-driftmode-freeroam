@@ -1,7 +1,6 @@
 const NativeUI = require("nativeui");
 const Menu = NativeUI.Menu;
 const UIMenuItem = NativeUI.UIMenuItem;
-const UIMenuCheckboxItem = NativeUI.UIMenuCheckboxItem;
 const Point = NativeUI.Point;
 	
 dr.driftMenu = new Menu("Main Menu", "", new Point(1250, 150));
