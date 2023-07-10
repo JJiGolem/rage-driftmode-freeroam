@@ -39,12 +39,12 @@ menu.ListChange.on((item, listIndex) => {
 
 menu.CheckboxChange.on((item, checked) => {
   if (item == clockPauseItem) {
-    const notifyMessage = "Game time " + checked ? "frozed" : "unfrozen";
+    const notifyMessage = `Game time ${checked ? "~r~frozed" : "~g~unfrozen"}`;
     mp.game.graphics.notify(notifyMessage);
     mp.game.time.pauseClock(checked);
   }
   else if (item == enableSnowItem) {
-    const notifyMessage = "Snow " + checked ? "enabled" : "disabled";
+    const notifyMessage = `Snow ${checked ? "~g~enabled" : "~r~disabled"}`;
     mp.game.graphics.notify(notifyMessage);
     mp.game1.gameplay.enableSnow = checked;
   }
