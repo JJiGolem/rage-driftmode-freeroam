@@ -1,6 +1,8 @@
 let fs = require("fs");
 let crypto = require('crypto');
 
+const mainSpawnPosition = new mp.Vector3(412.5, -624.6, 28);
+
 function md5(text) 
 {
 	return crypto.createHash('md5').update(text).digest('hex');
@@ -14,7 +16,7 @@ function setNewAccount(player)
 		socialClub: md5(player.socialClub),
 		serial: md5(player.serial),
 		driftScore: 0,
-		lastPosition: [0,0,73],
+		lastPosition: mainSpawnPosition.clone(),
 		outfit: 1
 	};
 	
@@ -66,7 +68,7 @@ mp.events.add("playerReady", (player) =>
 // player should not die normally though?
 mp.events.add("playerDeath", (player) =>
 {
-	player.spawn(player.stats.lastPosition);
+	player.spawn(mainSpawnPosition.clone());
 	player.outputChatBox("You've been spawned at your latest known position");
 });
 
