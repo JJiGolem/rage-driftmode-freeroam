@@ -1,17 +1,10 @@
-const NativeUI = require("nativeui");
-const UIMenuCheckboxItem = NativeUI.UIMenuCheckboxItem;
-
 let dlEnabled = false;
 
-const vehInfoItem = new UIMenuCheckboxItem("Vehicle Info", false);
-dr.driftMenu.AddItem(vehInfoItem);
-dr.driftMenu.CheckboxChange.on((item, checked) => {
-  if (item == vehInfoItem) {
-    dlEnabled = checked;
-    const notifyMessage = `<font color="#0099ff">[Vehicle Info]</font> ${dlEnabled ? "~w~Showing" : "~c~Hidding"}`;
-    mp.game.graphics.notify(notifyMessage);
-  }
-});
+mp.events.add("toggle_vehicle_info", (checked) => {
+  dlEnabled = checked;
+  const notifyMessage = `<font color="#0099ff">[Vehicle Info]</font> ${dlEnabled ? "~w~Showing" : "~c~Hidding"}`;
+  mp.game.graphics.notify(notifyMessage);
+})
 
 mp.events.add("render", () => {
   if (!dlEnabled) {

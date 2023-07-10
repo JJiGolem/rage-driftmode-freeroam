@@ -11,9 +11,12 @@ menu.Visible = false;
 
 const vehicleRepairItem = new UIMenuItem("Repair");
 const vehicleWashItem = new UIMenuItem("Wash");
+const vehInfoItem = new UIMenuCheckboxItem("Vehicle Info", false);
 
 menu.AddItem(vehicleRepairItem);
 menu.AddItem(vehicleWashItem);
+menu.AddItem(vehInfoItem);
+
 
 menu.ItemSelect.on((item, index) => {
   const localPlayer = mp.players.local;
@@ -34,6 +37,12 @@ menu.ItemSelect.on((item, index) => {
     vehicle.setDirtLevel(0.0);
   }
 });
+
+menu.CheckboxChange.on((item, checked) => {
+    if (item == vehInfoItem) {
+      mp.events.call("toggle_vehicle_info", checked);
+    }
+  });
 
 const menuItem = new UIMenuItem("Vehicle Settings");
 dr.driftMenu.AddItem(menuItem);
