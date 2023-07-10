@@ -18,7 +18,7 @@ setInterval(() =>
 mp.gui.chat.safeMode = false;
 mp.gui.chat.push("Welcome to Luv test server");
 mp.gui.chat.push(`<br/>Available hotkeys:
-					<br/>- F1: Main Menu
+					<br/>- F2: Main Menu
 				<br/>Available commands:
 					<br/>- /outfit [id] - change your outfit
 					<br/>- /veh [modelName] - spawn vehicle
