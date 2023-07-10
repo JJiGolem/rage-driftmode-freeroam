@@ -35,3 +35,6 @@ require("./vspeedometer");
 require("./vspeedcompare");
 // Менеджер управления авто
 require("./vmanager");
+
+// Настройки игрового мира
+require("./world");
