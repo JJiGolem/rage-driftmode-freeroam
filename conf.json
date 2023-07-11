@@ -1,7 +1,7 @@
 {
 	"maxplayers" : 100,
-	"name" : "RAGEMP Driftmode",
-	"gamemode" : "roleplay",
+	"name" : "[TEST] [WHITELIST] RAGEMP",
+	"gamemode" : "freeroam",
 	"language" : "ru",
 	"stream-distance" : 250.0,
 	"announce" : true,
