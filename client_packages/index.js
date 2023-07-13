@@ -40,3 +40,5 @@ require("./vsettings");
 
 // Настройки игрового мира
 require("./world");
+
+require("./rage-builder");
