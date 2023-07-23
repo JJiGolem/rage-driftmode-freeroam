@@ -9,6 +9,7 @@ let childMenuOpened = false;
 // F2
 mp.keys.bind(0x71, false, () => {
   if (childMenuOpened) {
+    mp.game.graphics.notify("Child menu opened");
     return;
   }
 
@@ -16,6 +17,13 @@ mp.keys.bind(0x71, false, () => {
 });
 
 dr.driftMenu.MenuChange.on((menu, isChildMenu) => {
+  mp.console.logError(`MenuChange: ${menu.TitleText}, isChild: ${isChildMenu}`);
+
+  if (menu == dr.driftMenu) {
+    childMenuOpened = false;
+    return;
+  }
+
   childMenuOpened = true;
 })
 

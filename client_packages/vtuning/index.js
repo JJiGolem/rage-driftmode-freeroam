@@ -1,117 +1,55 @@
 const NativeUI = require("nativeui");
 const Menu = NativeUI.Menu;
 const UIMenuItem = NativeUI.UIMenuItem;
+const UIMenuCheckboxItem = NativeUI.UIMenuCheckboxItem;
 const Point = NativeUI.Point;
 
-const categoryTitles = [
-  "Spoiler",
-  "Front Bumper",
-  "Rear Bumper",
-  "Side Skirts",
-  "Exhaust",
-  "Rollcage",
-  "Grille",
-  "Bonnet",
-  "Fenders and Arches",
-  "Fenders",
-  "Roof",
-  "Engine",
-  "Brakes",
-  "Transmission",
-  "Horn",
-  "Suspension",
-  "Armor",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "Headlights",
-  "",
-  "",
-  "Plate Holders",
-  "Vanity Plates",
-  "Interior Trim",
-  "Ornaments",
-  "Interior Dash",
-  "Dials",
-  "Door Speakers",
-  "Leather Seats",
-  "Steering Wheels",
-  "Column Shifters",
-  "Plaques",
-  "ICE",
-  "Speakers",
-  "Hydraulics",
-  "Engine Block",
-  "Air Filters",
-  "Strut Braces",
-  "Arch Covers",
-  "Aerials",
-  "Exterior Trim",
-  "Tank",
-  "Windows",
-  "",
-  "Livery"
-];
+const categoryTitles = require("./vtuning/categories");
+const vehicleColors = require("./vtuning/colors");
 
-// main menu
-let mainMenu = null;
+const localplayer = mp.players.local;
 
-let curCategory = -1;
-let transition = false;
+const tuningMenu = new Menu("Vehicle Tuning", "", new Point(1250, 150));
+const tuningItem = new UIMenuItem("Vehicle Tuning");
 
-let menus = {};
-
-function createTuningMenu(vehicle) {
-  curCategory = -1;
-
-  if (mainMenu) {
-    mainMenu.Visible = false;
-  }
-
-  if (menus.hasOwnProperty(vehicle.model)) {
-    mainMenu = menus[vehicle.model];
+mp.events.add("playerEnterVehicle", (vehicle, seat) => {
+  if (seat != -1) {
     return;
   }
 
-  mainMenu = new Menu("Vehicle Tuning", "", new Point(1250, 150));
-  mainMenu.Visible = false;
+  dr.driftMenu.AddItem(tuningItem);
+  dr.driftMenu.BindMenuToItem(tuningMenu, tuningItem);
+  loadModsToMenu(vehicle);
+})
 
-  menus[vehicle.model] = mainMenu;
+mp.events.add("playerLeaveVehicle", (vehicle, seat) => {
+  if (tuningMenu.Visible || Array.from(tuningMenu.Children.values()).some(m => m.Visible)) {
+    tuningMenu.GoBack();
+    tuningMenu.Close(true);
+    mp.game.graphics.notify("Tuning ~r~closed");
+  }
 
-  mainMenu.vehicleModel = vehicle.model;
+  tuningMenu.Clear();
+  dr.driftMenu.RemoveItem(tuningItem);
+  dr.driftMenu.ReleaseMenuFromItem(tuningItem);
+})
 
-  mainMenu.ItemSelect.on((item, index) => {
-    mainMenu.Visible = false;
-    curCategory = index;
-    categoryMenus[index].Visible = true;
-    transition = true;
-  });
-
-  let categoryMenus = [];
-
+function loadModsToMenu(vehicle) {
+  const turboItem = new UIMenuCheckboxItem("Turbo", false);
+  tuningMenu.AddItem(turboItem);
+  
   // categories
   for (let i = 0; i < categoryTitles.length; i++) {
     let numMods = vehicle.getNumMods(i);
 
     if (numMods > 0 && categoryTitles[i].length > 0) {
-      mainMenu.AddItem(new UIMenuItem(categoryTitles[i], ""));
-
-      let categoryMenu = new Menu(categoryTitles[i], "", new Point(1250, 150));
+      const categoryMenu = new Menu(categoryTitles[i], "", new Point(1250, 150));
       categoryMenu.Visible = false;
 
       categoryMenu.ItemSelect.on((item, index) => {
-        if (!transition) mp.events.callRemote("vtuning_set", item.modType, item.modIndex);
-        transition = false;
+        mp.events.callRemote("vtuning_set", item.modType, item.modIndex);
+        mp.game.graphics.notify(`Установлен ${categoryTitles[i]} на ${item.Text}`);
       });
-
-      categoryMenu.MenuClose.on(() => {
-        curCategory = -1;
-        mainMenu.Visible = true;
-      });
-
-      categoryMenu.modType = i;
 
       for (let modIndex = -1; modIndex < numMods; modIndex++) {
         if (modIndex == -1) {
@@ -131,39 +69,39 @@ function createTuningMenu(vehicle) {
         categoryMenu.AddItem(vehicleItem);
       }
 
-      categoryMenus.push(categoryMenu);
+      const categoryItem = new UIMenuItem(categoryTitles[i]);
+      tuningMenu.AddItem(categoryItem);
+      tuningMenu.BindMenuToItem(categoryMenu, categoryItem);
     }
   }
+
+  const colorsMenu = new Menu("Colors", "", new Point(1250, 150));
+  for (let i = 0; i < vehicleColors.length; i++) {
+    const color = vehicleColors[i];
+    const colorItem = new UIMenuItem(color.Description, "", color.ID);
+    // colorItem.SetRightLabel(`<font color="${color.HEX}">█</font>`);
+    colorsMenu.AddItem(colorItem);
+  }
+
+  colorsMenu.ItemSelect.on((item, index) => {
+    const colorId = parseInt(item.Data);
+    if (localplayer.vehicle) {
+      const color = vehicleColors.find(c => parseInt(c.ID) == colorId);
+      localplayer.vehicle.setColours(colorId, colorId);
+      mp.game.graphics.notify(`Установлен <font color="${color.HEX}">цвет</font>`);
+    }
+  })
+
+  const colorsItem = new UIMenuItem("Colors");
+  tuningMenu.AddItem(colorsItem);
+  tuningMenu.BindMenuToItem(colorsMenu, colorsItem);
 }
 
-const vtMenu = new UIMenuItem("Vehicle Tuning");
-dr.driftMenu.AddItem(vtMenu);
-
-dr.driftMenu.ItemSelect.on((item, index) => {
-  if (item != vtMenu) {
+tuningMenu.CheckboxChange.on((item, checked) => {
+  if (item.Text != "Turbo" || !localplayer.vehicle) {
     return;
   }
 
-  dr.driftMenu.Visible = false;
-
-  if (curCategory > -1) {
-    categoryMenus[curCategory].Visible = !categoryMenus[curCategory].Visible;
-  } else {
-    if (!mainMenu || !mainMenu.Visible) {
-      let vehicle = mp.players.local.vehicle;
-
-      if (vehicle) {
-        if (!mainMenu ||
-          mainMenu.vehicleModel !== vehicle.model) {
-          createTuningMenu(vehicle);
-        }
-
-        mainMenu.Visible = true;
-      } else {
-        mp.game.graphics.notify("~R~You should be in a vehicle to access this menu.");
-      }
-    } else {
-      mainMenu.Visible = false;
-    }
-  }
+  localplayer.vehicle.toggleMod(18, checked);
+  mp.game.graphics.notify(`Турбо ${checked ? "~g~установлен" : "~r~снят"}`);
 });
