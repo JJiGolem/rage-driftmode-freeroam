@@ -9,6 +9,7 @@ exports =
 		LowSpeed: 0,
 		LowAngle: 1,
 		DamageDetected: 2,
-		OutOfVehicle: 3
+		OutOfVehicle: 3,
+    DriftModeDisabled: 4
 	}
 };

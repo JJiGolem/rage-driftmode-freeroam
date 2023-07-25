@@ -3,7 +3,7 @@ const driftConfigs = require("driftrage/configs/drifting_json.js");
 const levels = require("driftrage/levels.js");
 const timerBarLib = require("timerbars");
 
-let timerBars =
+const timerBars =
 {
 	score: new timerBarLib.TimerBar("SCORE"),
 	time: new timerBarLib.TimerBar("TIME"),
@@ -39,7 +39,7 @@ let timerBars =
 timerBars.init();
 timerBars.show(false);
 
-let counter =
+const counter =
 {
 	currentScore: 0,
 	startTimestamp: 0,
@@ -155,3 +155,4 @@ mp.events.add("loadXPData", (exp) =>
 counter.init();
 
 dr.counter = counter;
+dr.timebars = timerBars;
