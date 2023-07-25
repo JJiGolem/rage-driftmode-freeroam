@@ -25,7 +25,7 @@ mp.events.add("playerJoin", (player) => {
 mp.events.add("vspawner_Spawn", createVehicle);
 mp.events.addCommand("veh", createVehicle);
 
-mp.events.addCommand("vehdelete", (player) => {
+mp.events.addCommand("vehdel", (player) => {
   const vehicle = player.vehicle;
   if (!vehicle) {
     player.outputChatBox(`Вы должны сидеть в машине`);
@@ -46,7 +46,7 @@ mp.events.addCommand("vehdelete", (player) => {
 })
 
 
-mp.events.addCommand("vehdeleteall", (player) => {
+mp.events.addCommand("vehdelall", (player) => {
   player.allVehicles.forEach(vehId => {
     const vehicle = mp.vehicles.at(vehId);
     if (vehicle && vehicle.owner == player) {

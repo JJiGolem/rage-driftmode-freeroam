@@ -22,7 +22,7 @@ mp.gui.chat.push(`<br/>Available hotkeys:
 				<br/>Available commands:
 					<br/>- /outfit [id] - change your outfit
 					<br/>- /veh [modelName] - spawn vehicle
-					<br/>- /vehdelete - delete vehicle you are sitting in
-					<br/>- /vehdeleteall - delete all spawned vehicles
+					<br/>- /vehdel - delete vehicle you are sitting in
+					<br/>- /vehdelall - delete all spawned vehicles
 				`);
 mp.gui.chat.safeMode = true;
