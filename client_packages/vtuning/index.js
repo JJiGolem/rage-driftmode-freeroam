@@ -37,6 +37,9 @@ mp.events.add("playerLeaveVehicle", (vehicle, seat) => {
 function loadModsToMenu(vehicle) {
   const turboItem = new UIMenuCheckboxItem("Turbo", false);
   tuningMenu.AddItem(turboItem);
+
+  const lowGripTiresItem = new UIMenuCheckboxItem("Low Grip Tires", false);
+  tuningMenu.AddItem(lowGripTiresItem);
   
   // categories
   for (let i = 0; i < categoryTitles.length; i++) {
@@ -98,10 +101,19 @@ function loadModsToMenu(vehicle) {
 }
 
 tuningMenu.CheckboxChange.on((item, checked) => {
-  if (item.Text != "Turbo" || !localplayer.vehicle) {
+  if (!localplayer.vehicle) {
     return;
   }
 
-  localplayer.vehicle.toggleMod(18, checked);
-  mp.game.graphics.notify(`Турбо ${checked ? "~g~установлен" : "~r~снят"}`);
+  if (item.Text == "Turbo") {
+    localplayer.vehicle.toggleMod(18, checked);
+    mp.game.graphics.notify(`Турбо ${checked ? "~g~установлен" : "~r~снят"}`);
+  }
+
+  if (item.Text == "Low Grip Tires") {
+    mp.game.invoke("0x5AC79C98C5C17F05", localplayer.vehicle, checked);
+    mp.game.invoke("0x5AC79C98C5C17F05", localplayer.vehicle.handle, checked);
+    localplayer.vehicle.setTyresCanBurst(checked);
+    mp.game.graphics.notify(`Шины с низким трением ${checked ? "~g~установлены" : "~r~сняты"}`);
+  }
 });
