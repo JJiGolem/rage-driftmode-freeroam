@@ -44,3 +44,5 @@ require("./world");
 require("./rage-builder");
 
 require("./blipCreator");
+
+require("./locations");
