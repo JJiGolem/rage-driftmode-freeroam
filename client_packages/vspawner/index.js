@@ -1,3 +1,4 @@
+const getUserInputAsync = require("./utils/basicInput")
 const NativeUI = require("nativeui");
 const Menu = NativeUI.Menu;
 const UIMenuItem = NativeUI.UIMenuItem;
@@ -10,6 +11,31 @@ const categoryTitles = ["Compacts", "Sedans", "SUVs", "Coupes", "Muscle", "Sport
 // main menu
 const mainMenu = new Menu("Vehicle Spawner", "", new Point(1250, 150));
 mainMenu.Visible = false;
+
+const vehicleEnterNameItem = new UIMenuItem("Spawn by model name");
+mainMenu.AddItem(vehicleEnterNameItem);
+mainMenu.ItemSelect.on(async (item, index) => {
+  if (item == vehicleEnterNameItem) {
+    try {
+      const vehicleModelName = await getUserInputAsync({
+        title: "Enter vehicle model name", // Title shown on the input box
+        defaultText: "", // Default value of the input box
+        maxLength: 32, // Obvious enough, maximum length of the input
+        showMaxLength: false, // If true, will display max length on title
+        trimResult: true, // Removes whitespace from the player's input
+        rejectIfEmpty: false, // If true, empty input causes promise rejection instead of resolving with an empty string
+      })
+
+      if (!vehicleModelName) {
+        return;
+      }
+  
+      mp.events.callRemote("vspawner_Spawn", vehicleModelName);
+    } catch (error) {
+      mp.console.logError(error);
+    }
+  }
+})
 
 let categoryMenus = [];
 
