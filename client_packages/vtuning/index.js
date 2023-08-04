@@ -8,6 +8,7 @@ const natives = require("./utils/natives");
 
 const categoryTitles = require("./vtuning/categories");
 const vehicleColors = require("./vtuning/colors");
+const vehicleModColors = ["Normal", "Metallic", "Pearl", "Matte", "Metal", "Chrome", "Chameleon"];
 
 const localplayer = mp.players.local;
 
@@ -80,26 +81,7 @@ function loadModsToMenu(vehicle) {
     }
   }
 
-  const colorsMenu = new Menu("Colors", "", new Point(1250, 150));
-  for (let i = 0; i < vehicleColors.length; i++) {
-    const color = vehicleColors[i];
-    const colorItem = new UIMenuItem(color.Description, "", color.ID);
-    // colorItem.SetRightLabel(`<font color="${color.HEX}">█</font>`);
-    colorsMenu.AddItem(colorItem);
-  }
-
-  colorsMenu.ItemSelect.on((item, index) => {
-    const colorId = parseInt(item.Data);
-    if (localplayer.vehicle) {
-      const color = vehicleColors.find(c => parseInt(c.ID) == colorId);
-      localplayer.vehicle.setColours(colorId, colorId);
-      mp.game.graphics.notify(`Установлен <font color="${color.HEX}">цвет</font>`);
-    }
-  })
-
-  const colorsItem = new UIMenuItem("Colors");
-  tuningMenu.AddItem(colorsItem);
-  tuningMenu.BindMenuToItem(colorsMenu, colorsItem);
+  addColorsToMenu();
 }
 
 tuningMenu.CheckboxChange.on((item, checked) => {
@@ -118,3 +100,131 @@ tuningMenu.CheckboxChange.on((item, checked) => {
     mp.game.graphics.notify(`Шины с низким трением ${checked ? "~g~установлены" : "~r~сняты"}`);
   }
 });
+
+
+function addColorsToMenu() {
+  const colorsMainMenu = new Menu("Colors", "", new Point(1250, 150));
+  const colorsMainItem = new UIMenuItem("Colors");
+  tuningMenu.BindMenuToItem(colorsMainMenu, colorsMainItem);
+
+  const primaryColorItem = new UIMenuItem("Primary Color");
+  const secondaryColorItem = new UIMenuItem("Secondary Color");
+  const primaryModColorItem = new UIMenuItem("Primary Mod Color");
+  const secondaryModColorItem = new UIMenuItem("Secondary Mod Color");
+  const pearlescentColorItem = new UIMenuItem("Pearlescent Color");
+  const wheelsColorItem = new UIMenuItem("Wheels Color");
+
+  primaryColorItem.SelectHandler = setPrimaryColor;
+  secondaryColorItem.SelectHandler = setSecondaryColor;
+  primaryModColorItem.SelectHandler = setPrimaryModColor;
+  secondaryModColorItem.SelectHandler = setSecondaryModColor;
+  pearlescentColorItem.SelectHandler = setPearlescenColor;
+  wheelsColorItem.SelectHandler = setWheelsColor;
+
+  const colorMenu = new Menu("Colors", "Set colors on your vehicle", new Point(1250, 150));
+  
+  colorsMainMenu.BindMenuToItem(colorMenu, primaryColorItem);
+  colorsMainMenu.BindMenuToItem(colorMenu, secondaryColorItem);
+  colorsMainMenu.BindMenuToItem(colorMenu, primaryModColorItem);
+  colorsMainMenu.BindMenuToItem(colorMenu, secondaryModColorItem);
+  colorsMainMenu.BindMenuToItem(colorMenu, pearlescentColorItem);
+  colorsMainMenu.BindMenuToItem(colorMenu, wheelsColorItem);
+
+  colorsMainMenu.ItemSelect.on((item, index) => {
+    colorMenu.Clear();
+    colorMenu.TitleText = item.Text;
+    colorMenu.SubTitleText = item.Description;
+    colorMenu.ItemSelectHandler = item.SelectHandler;
+
+    if (item == primaryModColorItem || item == secondaryModColorItem) {
+      for (let i = 0; i < vehicleModColors.length; i++) {
+        const color = vehicleModColors[i];
+        const colorItem = new UIMenuItem(color, "", i);
+        colorMenu.AddItem(colorItem);
+      }
+      return;
+    }
+
+    for (let i = 0; i < vehicleColors.length; i++) {
+      const color = vehicleColors[i];
+      const colorItem = new UIMenuItem(color.Description, "", color.ID);
+      colorMenu.AddItem(colorItem);
+    }
+  })
+
+  colorMenu.ItemSelect.on((item, index) => {
+    const colorId = parseInt(item.Data);
+    if (!localplayer.vehicle) {
+      return;
+    }
+
+    colorMenu.ItemSelectHandler(item, localplayer.vehicle, colorId);
+  });
+}
+
+function setPrimaryColor(menuItem, vehicle, colorId) {
+  const { colorPrimary, colorSecondary } = vehicle.getColours(0, 0);
+  mp.game.graphics.notify(`primaryColor: ${colorPrimary}, secondaryColor: ${colorSecondary}, ColorId: ${colorId}`);
+  vehicle.setColours(colorId, colorSecondary);
+  
+  const color = vehicleColors.find(c => parseInt(c.ID) == colorId);
+  if (color) {
+    mp.game.graphics.notify(`Установлен ~h~<font color="${color.HEX}">цвет</font>`);
+  }
+}
+
+function setSecondaryColor(menuItem, vehicle, colorId) {
+  const { colorPrimary, colorSecondary } = vehicle.getColours(0, 0);
+  mp.game.graphics.notify(`primaryColor: ${colorPrimary}, secondaryColor: ${colorSecondary}, ColorId: ${colorId}`);
+  vehicle.setColours(colorPrimary, colorId);
+  
+  const color = vehicleColors.find(c => parseInt(c.ID) == colorId);
+  if (color) {
+    mp.game.graphics.notify(`Установлен ~h~<font color="${color.HEX}">цвет</font>`);
+  }
+}
+
+function setPrimaryModColor(menuItem, vehicle, colorId) {
+  const { colorPrimary, colorSecondary } = vehicle.getColours(0, 0);
+  const { pearlescentColor, wheelColor } = vehicle.getExtraColours(1, 1);
+  vehicle.setModColor1(colorId, 0, 0);//Основной цвет
+
+  const numbers = mp.game.vehicle.getNumModColors(colorId, true);
+
+  const colorType = vehicleModColors[colorId];
+  if (colorType) {
+    mp.game.graphics.notify(`|${numbers}| ${vehicle.getModColor1TextLabel(true)} Установлен тип цвета ~h~${colorType}`);
+  }
+}
+
+function setSecondaryModColor(menuItem, vehicle, colorId) {
+  const { colorPrimary, colorSecondary } = vehicle.getColours(0, 0);
+  vehicle.setModColor2(colorId, 0);// Дополнительный цвет
+
+  const colorType = vehicleModColors[colorId];
+  if (colorType) {
+    mp.game.graphics.notify(`Установлен тип цвета ~h~${colorType}`);
+  }
+}
+
+function setPearlescenColor(menuItem, vehicle, colorId) {
+  const { pearlescentColor, wheelColor } = vehicle.getExtraColours(1, 1);
+  vehicle.setExtraColours(colorId, wheelColor);
+  mp.events.callRemote("vtuning_setPearlescentColor", colorId);
+
+  const color = vehicleColors.find(c => parseInt(c.ID) == colorId);
+  if (color) {
+    mp.game.graphics.notify(`Установлен ~h~<font color="${color.HEX}">цвет</font>`);
+  }
+}
+
+function setWheelsColor(menuItem, vehicle, colorId) {
+  const { pearlescentColor, wheelColor } = vehicle.getExtraColours(1, 1);
+  vehicle.setExtraColours(pearlescentColor, wheelColor);
+  mp.events.callRemote("vtuning_setWheelColor", colorId);
+  
+  const color = vehicleColors.find(c => parseInt(c.ID) == colorId);
+  if (color) {
+    mp.game.graphics.notify(`Установлен ~h~<font color="${color.HEX}">цвет</font>`);
+  }
+}

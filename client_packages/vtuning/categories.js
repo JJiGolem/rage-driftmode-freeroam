@@ -22,7 +22,7 @@ exports = [
   "",
   "",
   "Headlights",         // 22
-  "",
+  "Wheel Disks",
   "",
   "Plate Holders",
   "Vanity Plates",
