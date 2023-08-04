@@ -4,6 +4,8 @@ const UIMenuItem = NativeUI.UIMenuItem;
 const UIMenuCheckboxItem = NativeUI.UIMenuCheckboxItem;
 const Point = NativeUI.Point;
 
+const natives = require("./utils/natives");
+
 const categoryTitles = require("./vtuning/categories");
 const vehicleColors = require("./vtuning/colors");
 
@@ -111,8 +113,7 @@ tuningMenu.CheckboxChange.on((item, checked) => {
   }
 
   if (item.Text == "Low Grip Tires") {
-    mp.game.invoke("0x5AC79C98C5C17F05", localplayer.vehicle, checked);
-    mp.game.invoke("0x5AC79C98C5C17F05", localplayer.vehicle.handle, checked);
+    natives.SetDriftTyresEnabled(localplayer.vehicle.handle, checked);
     localplayer.vehicle.setTyresCanBurst(checked);
     mp.game.graphics.notify(`Шины с низким трением ${checked ? "~g~установлены" : "~r~сняты"}`);
   }

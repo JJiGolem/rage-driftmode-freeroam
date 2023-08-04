@@ -20,8 +20,7 @@ function getUserInputAsync(options) {
       const endTime = Date.now() + timeout;
       const timer = setInterval(() => {
           if (timeout > 0 && Date.now() > endTime) {
-              mp.game.invoke(natives.ForceCloseTextInputBox);
-
+              natives.ForceCloseTextInputBox();
               clearInterval(timer);
               reject("timeout");
           }
