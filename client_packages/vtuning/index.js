@@ -20,6 +20,11 @@ mp.events.add("playerEnterVehicle", (vehicle, seat) => {
     return;
   }
 
+  if (dr.driftMenu.MenuItems.includes(tuningItem)) {
+    mp.game.graphics.notify(`Tuning Item already included`);
+    return;
+  }
+
   dr.driftMenu.AddItem(tuningItem);
   dr.driftMenu.BindMenuToItem(tuningMenu, tuningItem);
   loadModsToMenu(vehicle);

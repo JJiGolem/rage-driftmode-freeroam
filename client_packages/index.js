@@ -37,6 +37,8 @@ require("./vspeedcompare");
 require("./vmanager");
 // Настройки машины
 require("./vsettings");
+// Сиденья
+require("./vseats");
 
 // Настройки игрового мира
 require("./world");
