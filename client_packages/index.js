@@ -7,6 +7,8 @@ require("timerbars");
 // Ядро мода
 require("driftrage");
 
+// Одежда игрока
+require("./playerClothes");
 // Список игроков
 require("./playerlist");
 // Блипы игроков на карте
