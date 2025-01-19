@@ -50,3 +50,7 @@ require("./rage-builder");
 require("./blipCreator");
 
 require("./locations");
+
+require("./addons");
+
+require("./camera");
