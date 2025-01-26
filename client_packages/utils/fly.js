@@ -324,14 +324,21 @@ mp.events.add('render', () => {
 
 const NativeUI = require("nativeui");
 const UIMenuCheckboxItem = NativeUI.UIMenuCheckboxItem;
+const UIMenuListItem = NativeUI.UIMenuListItem;
+const ItemsCollection = NativeUI.ItemsCollection;
 
 let flyItem = new UIMenuCheckboxItem("Free camera", false);
 flyItem.eventName = "toggle_fly_camera";
 let noclipItem = new UIMenuCheckboxItem("Noclip", false);
 noclipItem.eventName = "toggle_noclip";
 
+const pedVisibleCheckbox = new UIMenuCheckboxItem("Visible", true);
+const pedAlphaListItem = new UIMenuListItem("Alpha", "", new ItemsCollection(Array.from(new Array(256), (x, i) => i)), 255);
+
 dr.driftMenu.AddItem(flyItem);
 dr.driftMenu.AddItem(noclipItem);
+dr.driftMenu.AddItem(pedVisibleCheckbox);
+dr.driftMenu.AddItem(pedAlphaListItem);
 
 dr.driftMenu.CheckboxChange.on((item, checked) => {
 
@@ -345,7 +352,22 @@ dr.driftMenu.CheckboxChange.on((item, checked) => {
 		stopFreeCam(true);
 	}
 
+    if (item == pedVisibleCheckbox) {
+        mp.players.local.setVisible(checked, false);
+    }
+
 	mp.events.call(item.eventName, checked);
+});
+
+dr.driftMenu.ListChange.on((item, listIndex) => {
+    if (item !== pedAlphaListItem) {
+        return;
+    }
+
+    mp.players.local.setAlpha(listIndex);
+    if (listIndex == 255) {
+        mp.players.local.resetAlpha();
+    }
 });
 
 mp.events.add("toggle_noclip", (enabled) => {

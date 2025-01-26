@@ -7,6 +7,12 @@ require("driftrage/mainmenu.js");
 mp.events.add("render", () =>
 {
 	dr.driftMngr.pulseDrift();
+
+	const localPlayer = mp.players.local;
+	const vehicle = localPlayer.vehicle;
+	if (vehicle) {
+		
+	}
 });
 
 

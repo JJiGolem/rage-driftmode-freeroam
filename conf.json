@@ -4,8 +4,8 @@
 	"gamemode" : "freeroam",
 	"language" : "ru",
 	"stream-distance" : 250.0,
-	"announce" : true,
+	"announce" : false,
 	"enable-nodejs" : true,
-	"allow-cef-debugging": false,
+	"allow-cef-debugging": true,
 	"port": 22005
 }

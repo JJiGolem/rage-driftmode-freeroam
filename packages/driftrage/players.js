@@ -1,5 +1,5 @@
-let fs = require("fs");
-let crypto = require('crypto');
+const fs = require("fs");
+const crypto = require('crypto');
 
 const mainSpawnPosition = new mp.Vector3(412.5, -624.6, 28);
 
@@ -131,3 +131,9 @@ mp.events.add("updateDriftScore", (player, score) =>
 {
 	player.stats.driftScore = parseInt(score, 36);
 });
+
+mp.events.add("packagesLoaded", () => {
+	if (!fs.existsSync("./epicdb/users")) {
+		fs.mkdirSync("./epicdb/users", { recursive: true });
+	}
+})

@@ -7,7 +7,7 @@ const ItemsCollection = NativeUI.ItemsCollection;
 const Point = NativeUI.Point;
 
 const clothesComponents = [
-  "",
+  "Head",
   "Masks",
   "Hair Styles",
   "Torsos",

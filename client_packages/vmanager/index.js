@@ -54,11 +54,16 @@ mp.events.add({
     }
 })
 
+// B
 mp.keys.bind(0x42, true, _ => {
     if (state === 0 && localPlayer.vehicle) {
         if (UI === null) {
             mp.gui.cursor.visible = true;
-            UI = mp.browsers.new('package://vmanager/Manager/index.html')
+            // UI = mp.browsers.new('package://vmanager/Manager/index.html')
+            UI = mp.browsers.new('http://package/browser/wwwroot/index.html')
+            setTimeout(() => {
+                UI.execute(`DotNet.invokeMethodAsync('SharpRageUI', 'SetActive', true);`);
+            }, 5_000);
             state = 1;
             updateStatus();
         } else {
@@ -70,7 +75,8 @@ mp.keys.bind(0x42, true, _ => {
     } else if (state === 1 && localPlayer.vehicle) {
         mp.gui.cursor.visible = false;
         state = 0;
-        UI.execute("$('body').fadeOut('fast')");
+        UI.execute(`DotNet.invokeMethodAsync('SharpRageUI', 'SetActive', false);`);
+        // UI.execute("$('body').fadeOut('fast')");
     }
 
 });

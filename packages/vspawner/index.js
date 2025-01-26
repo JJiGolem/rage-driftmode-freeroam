@@ -6,7 +6,9 @@ function xyInFrontOfPos(pos, heading, dist) {
 }
 
 function createVehicle(player, modelName) {
-  let position = xyInFrontOfPos(player.position, player.heading, 3.0);
+  const position = xyInFrontOfPos(player.position, player.heading, 3.0);
+
+  console.log(`[vspawner]: createVehicle: ${modelName}`);
 
   const vehicle = mp.vehicles.new(mp.joaat(modelName), position, {
     heading: player.heading,

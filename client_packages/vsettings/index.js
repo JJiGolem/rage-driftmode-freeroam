@@ -13,11 +13,13 @@ const vehicleRepairItem = new UIMenuItem("Repair");
 const vehicleWashItem = new UIMenuItem("Wash");
 const vehInfoItem = new UIMenuCheckboxItem("Vehicle Info", false);
 const driftEnabled = new UIMenuCheckboxItem("Drift Mode", false);
+const engineSounds = new UIMenuListItem("EngineSounds", "", new ItemsCollection(["stock", "vigero"]))
 
 menu.AddItem(vehicleRepairItem);
 menu.AddItem(vehicleWashItem);
 menu.AddItem(vehInfoItem);
 menu.AddItem(driftEnabled);
+menu.AddItem(engineSounds);
 
 menu.ItemSelect.on((item, index) => {
   const localPlayer = mp.players.local;
@@ -36,6 +38,23 @@ menu.ItemSelect.on((item, index) => {
   } else if (item == vehicleWashItem) {
     vehicle.setDirtLevel(0.0);
   }
+});
+
+menu.ListChange.on((item, listIndex) => {
+  if (item != engineSounds) {
+    return;
+  }
+  const localPlayer = mp.players.local;
+  const vehicle = localPlayer.vehicle;
+  
+  const sound = engineSounds.SelectedValue;
+  if (sound == "stock") {
+    
+    vehicle.setHandling("audioNameHasn", vehicle.getDefaultHandling("audioNameHash"));
+    return;
+  }
+
+  vehicle.setHandling("audioNameHasn", sound);
 });
 
 menu.CheckboxChange.on((item, checked) => {
