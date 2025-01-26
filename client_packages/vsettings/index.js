@@ -13,7 +13,7 @@ const vehicleRepairItem = new UIMenuItem("Repair");
 const vehicleWashItem = new UIMenuItem("Wash");
 const vehInfoItem = new UIMenuCheckboxItem("Vehicle Info", false);
 const driftEnabled = new UIMenuCheckboxItem("Drift Mode", false);
-const engineSounds = new UIMenuListItem("EngineSounds", "", new ItemsCollection(["stock", "vigero"]))
+const engineSounds = new UIMenuListItem("EngineSounds", "", new ItemsCollection(["stock", "weevil", "vigero"]))
 
 menu.AddItem(vehicleRepairItem);
 menu.AddItem(vehicleWashItem);
@@ -48,13 +48,8 @@ menu.ListChange.on((item, listIndex) => {
   const vehicle = localPlayer.vehicle;
   
   const sound = engineSounds.SelectedValue;
-  if (sound == "stock") {
-    
-    vehicle.setHandling("audioNameHasn", vehicle.getDefaultHandling("audioNameHash"));
-    return;
-  }
-
-  vehicle.setHandling("audioNameHasn", sound);
+  // Чтобы вернуть сток, можно отправить любую не существующую строку (название)
+  mp.game.audio.forceVehicleEngine(vehicle.handle, sound);
 });
 
 menu.CheckboxChange.on((item, checked) => {
